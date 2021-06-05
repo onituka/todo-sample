@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  mysql:
+    image: mysql:8.0
+    env_file: .env
+    environment:
+      TZ: "Asia/Tokyo"
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql/conf.d:/etc/mysql/conf.d
