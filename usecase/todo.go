@@ -7,6 +7,7 @@ import (
 
 type TodoUsecase interface {
 	FetchTodo(todoID int) (*output.Todo, error)
+	FetchAllTodo() ([]output.Todo, error)
 }
 
 type todoUsecase struct {
@@ -34,4 +35,29 @@ func (u *todoUsecase) FetchTodo(todoID int) (*output.Todo, error) {
 		Priority:           todo.PriorityColor(),
 		CompleteFlag:       todo.CompleteFlag(),
 	}, nil
+}
+
+//全件取得
+func (u todoUsecase) FetchAllTodo() ([]output.Todo, error) {
+	todos, err := u.todoRepository.FetchAllTodo()
+	if err != nil {
+		return nil, err
+	}
+
+	todosDto := make([]output.Todo, len(todos))
+
+	for i, todo := range todos {
+		todosDto[i] = output.Todo{
+			ID:                 todo.ID(),
+			Title:              todo.Title(),
+			Memo:               todo.Memo(),
+			ImplementationDate: output.OutDate{Time: todo.ImplementationDate()},
+			DueDate:            output.OutDate{Time: todo.DueDate()},
+			Priority:           todo.PriorityColor(),
+			CompleteFlag:       todo.CompleteFlag(),
+		}
+
+	}
+
+	return todosDto, nil
 }
