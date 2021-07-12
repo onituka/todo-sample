@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -34,4 +35,17 @@ func (h *todoHandler) FetchTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	presenter.JSON(w, http.StatusOK, out)
+}
+
+//全件取得
+func (h *todoHandler) FetchAllTodo(w http.ResponseWriter, r *http.Request) {
+	items, err := h.todoUsecase.FetchAllTodo()
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	if err = json.NewEncoder(w).Encode(items); err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+
 }

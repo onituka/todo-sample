@@ -32,6 +32,7 @@ func Run() error {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/todos/{id:[0-9]+}", todoHandler.FetchTodo).Methods(http.MethodGet)
+	router.HandleFunc("/todos", todoHandler.FetchAllTodo).Methods(http.MethodGet)
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", 8080),
