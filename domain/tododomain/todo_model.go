@@ -24,6 +24,18 @@ func NewTodo(id int, title string, memo *string, implementationDate time.Time, d
 	}
 }
 
+func NewAddTodo(title string, memo *string, implementationDate time.Time, dueDate time.Time, priorityColor string, completeFlag bool) *Todo {
+	return &Todo{
+		title:              title,
+		memo:               memo,
+		implementationDate: implementationDate,
+		dueDate:            dueDate,
+		priorityColor:      priorityColor,
+		completeFlag:       completeFlag,
+	}
+
+}
+
 func (t *Todo) ID() int {
 	return t.id
 }

@@ -92,3 +92,27 @@ func (r *todoRepository) FetchAllTodo() ([]*tododomain.Todo, error) {
 	}
 	return todos, nil
 }
+
+//新規作成
+func (r *todoRepository) CreateTodo(todo *tododomain.Todo) (int, error) {
+	query := `
+         INSERT INTO todos
+        (
+            title,
+            memo,
+            implementation_date,
+            due_date,
+            priorities_id,
+            complete_flag
+        )
+         VALUES
+            (?, ?, ?, ?, ?, ?)`
+
+	result, err := r.MySQLHandler.Conn.Exec(query, todo.Title(), todo.Memo(), todo.ImplementationDate(), todo.DueDate(), 1, todo.CompleteFlag())
+	if err != nil {
+		return 0, err
+	}
+
+	id, _ := result.LastInsertId()
+	return int(id), nil
+}
