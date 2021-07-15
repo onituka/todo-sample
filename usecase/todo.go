@@ -66,7 +66,7 @@ func (u todoUsecase) FetchAllTodo() ([]output.Todo, error) {
 
 //新規作成
 func (u *todoUsecase) Create(in *input.Todo) (*output.Todo, error) {
-	todo := tododomain.NewAddTodo(in.Title, in.Memo, in.ImplementationDate, in.DueDate, in.Priority, in.CompleteFlag)
+	todo := tododomain.NewAddTodo(in.Title, in.Memo, in.ImplementationDate.Time, in.DueDate.Time, in.Priority, in.CompleteFlag)
 	id, err := u.todoRepository.CreateTodo(todo)
 	if err != nil {
 		return nil, err
