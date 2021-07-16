@@ -136,5 +136,31 @@ func (r *todoRepository) UpdateTodo(todo *tododomain.Todo) error {
 	if err != nil {
 		return apierrors.NewInternalServerError(apierrors.NewErrorString("Internal Server Error"))
 	}
+
 	return err
+}
+
+//削除
+func (r *todoRepository) DeleteTodo(todoID int) error {
+	query := `
+           DELETE
+           FROM
+               todos
+           WHERE
+	           todos.id = ?`
+
+	result, err := r.MySQLHandler.Conn.Exec(query, todoID)
+	if err != nil {
+		return apierrors.NewInternalServerError(apierrors.NewErrorString("Internal Server Error"))
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return apierrors.NewInternalServerError(apierrors.NewErrorString("Internal Server Error"))
+	}
+
+	if rowsAffected == 0 {
+		return apierrors.NewNotFoundError(apierrors.NewErrorString("todoはすでに削除されています"))
+	}
+	return nil
 }
