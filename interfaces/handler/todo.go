@@ -95,3 +95,18 @@ func (h *todoHandler) Update(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 	}
 }
+
+//削除
+func (h *todoHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	todoID, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		presenter.ErrorJSON(w, apierrors.NewBadRequestError(apierrors.NewErrorString("todo id を正しく入力して下さい")))
+	}
+
+	if err := h.todoUsecase.Delete(todoID); err != nil {
+		presenter.ErrorJSON(w, err)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}

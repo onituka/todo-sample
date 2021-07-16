@@ -11,6 +11,7 @@ type TodoUsecase interface {
 	FetchAllTodo() ([]output.Todo, error)
 	Create(in *input.Todo) (*output.Todo, error)
 	Update(up *input.Todo) (*output.Todo, error)
+	Delete(todoID int) error
 }
 
 type todoUsecase struct {
@@ -112,4 +113,13 @@ func (u *todoUsecase) Update(up *input.Todo) (*output.Todo, error) {
 		Priority:           todo.PriorityColor(),
 		CompleteFlag:       todo.CompleteFlag(),
 	}, nil
+}
+
+//削除
+func (u *todoUsecase) Delete(todoID int) error {
+	if err := u.todoRepository.DeleteTodo(todoID); err != nil {
+		return err
+	}
+
+	return nil
 }

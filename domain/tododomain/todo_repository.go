@@ -5,4 +5,5 @@ type Repository interface {
 	FetchAllTodo() ([]*Todo, error)
 	CreateTodo(todo *Todo) (int, error)
 	UpdateTodo(todo *Todo) error
+	DeleteTodo(todoID int) error
 }
