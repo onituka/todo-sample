@@ -68,3 +68,30 @@ func (h todoHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 	}
 }
+
+//更新
+func (h *todoHandler) Update(w http.ResponseWriter, r *http.Request) {
+	todoID, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		presenter.ErrorJSON(w, apierrors.NewBadRequestError(apierrors.NewErrorString("todo id を指定してください")))
+		return
+	}
+
+	up := input.Todo{
+		ID: todoID,
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&up); err != nil {
+		presenter.ErrorJSON(w, apierrors.NewBadRequestError(apierrors.NewErrorString("データを正しく入力してください")))
+		return
+	}
+	out, err := h.todoUsecase.Update(&up)
+	if err != nil {
+		presenter.ErrorJSON(w, apierrors.NewInternalServerError(apierrors.NewErrorString("Internal Server Error")))
+		return
+	}
+
+	if err = json.NewEncoder(w).Encode(out); err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+}
