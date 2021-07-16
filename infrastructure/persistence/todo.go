@@ -116,3 +116,25 @@ func (r *todoRepository) CreateTodo(todo *tododomain.Todo) (int, error) {
 	id, _ := result.LastInsertId()
 	return int(id), nil
 }
+
+//更新
+func (r *todoRepository) UpdateTodo(todo *tododomain.Todo) error {
+	query := `
+          UPDATE 
+               todos
+          SET
+               title = ?,
+               memo = ?,
+               implementation_date = ?,
+               due_date = ?,
+               priorities_id = ?,
+               complete_flag = ?
+           WHERE
+            todos.id = ?`
+
+	_, err := r.MySQLHandler.Conn.Exec(query, todo.Title(), todo.Memo(), todo.ImplementationDate(), todo.DueDate(), 1, todo.CompleteFlag(), todo.ID())
+	if err != nil {
+		return apierrors.NewInternalServerError(apierrors.NewErrorString("Internal Server Error"))
+	}
+	return err
+}
