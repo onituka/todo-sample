@@ -43,3 +43,8 @@ jobs:
         uses: golangci/golangci-lint-action@v2
         with:
           version: v1.29
+          env:
+            GITHUB_USER: "Syuto Onituka"
+            GITHUB_EMAIL: "onituka.0701@gmail.com"
+            GITHUB_PASSWORD: ${{ secrets.ACCESS_PASSWORD }}
+            ASSIGNEES: ${{ github.actor }}
