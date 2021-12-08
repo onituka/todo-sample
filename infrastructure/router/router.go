@@ -38,7 +38,7 @@ func Run() error {
 	router.HandleFunc("/todos/{id:[0-9]+}", todoHandler.Delete).Methods(http.MethodDelete)
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", 8080),
+		Addr:    fmt.Sprintf(":%d", 8081),
 		Handler: router,
 	}
 
